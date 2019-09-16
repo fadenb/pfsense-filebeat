@@ -1,7 +1,7 @@
 ELK_PfSense
 Run from command line to install:
 
-fetch -o - https://git.io/fhto6 | sh -s
+fetch -o - https://git.io/JeO3f | sh -s
 
 Optional add menu item by add this to the service section of /cf/conf/config.xml
 
