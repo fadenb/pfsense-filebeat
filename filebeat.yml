@@ -23,39 +23,22 @@ filebeat.inputs:
 - type: log
   enabled: true
   paths:
-    - /var/log/snort/snort_*/alert
+    - /var/log/suricata/suricata_*
 
   fields:
-    event.type: snort
-
-#- type: log
-#  enabled: true
-#  paths:
-#    - /var/log/pfblockerng/dnsbl.log
-#
-#  fields:
-#    event.type: pfblocker
-
-#------------------------------ Syslog input --------------------------------
-# Experimental: Config options for the Syslog input
-# Accept RFC3164 formatted syslog event via UDP.
-- type: syslog
-  enabled: true
-  protocol.udp:
-    # The host and port to receive the new event
-    host: "127.0.0.1:9000"
+    event.type: eve
 
 #----------------------------- Logstash output --------------------------------
 output.logstash:
   # The Logstash hosts
-  hosts: ["change:5044"]
+  hosts: ["172.16.0.9:5044"]
 
   # Optional SSL. By default is off.
   # List of root certificates for HTTPS server verifications
-  ssl.certificate_authorities: ["change"]
+  # ssl.certificate_authorities: ["change"]
 
   # Certificate for SSL client authentication
-  ssl.certificate: "change"
+  # ssl.certificate: "change"
 
   # Client Certificate Key
-  ssl.key: "change"
+  # ssl.key: "change"

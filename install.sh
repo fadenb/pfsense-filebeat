@@ -16,7 +16,7 @@ echo " done."
 
 #Install new version
 echo -n "Installing filebeat..."
-/usr/sbin/pkg add -f https://pkg.freebsd.org/FreeBSD:11:amd64/latest/All/beats-6.4.2.txz
+/usr/sbin/pkg add -f https://pkg.freebsd.org/FreeBSD:11:amd64/latest/All/beats-6.7.1.txz
 echo " done."
 
 # Make filebeat auto start at boot
@@ -33,7 +33,7 @@ if [ ! -f /etc/rc.conf.local ] || [ $(grep -c filebeat_enable /etc/rc.conf.local
 fi
 
 # Copy config from Github
-/usr/local/bin/curl https://raw.githubusercontent.com/Noebas/pfsense-filebeat/master/filebeat.yml --output /usr/local/etc/filebeat.yml
+/usr/local/bin/curl https://raw.githubusercontent.com/fadenb/pfsense-filebeat/master/filebeat.yml --output /usr/local/etc/filebeat.yml
 
 # Start it up:
 echo -n "Starting filebeat service..."
