@@ -8,8 +8,10 @@ if [ -f /usr/local/etc/rc.d/filebeat ]; then
 fi
 
 #Remove current version and config
-echo "Removing filebeat..."
-/usr/sbin/pkg remove -y beats
+echo "Removing beats[6|7]..."
+/usr/sbin/pkg remove -y beats || true
+/usr/sbin/pkg remove -y beats6 || true
+/usr/sbin/pkg remove -y beats7 || true
 /bin/rm /usr/local/etc/rc.d/filebeat.sh
 /bin/rm /usr/local/etc/filebeat.yml
 echo "done."
