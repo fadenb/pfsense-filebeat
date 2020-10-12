@@ -23,7 +23,43 @@ echo "done."
 
 # Make filebeat auto start at boot
 echo "Installing rc script..."
-/bin/cp /usr/local/etc/rc.d/filebeat /usr/local/etc/rc.d/filebeat.sh
+# shellcheck disable=SC2154
+# Script taken from beats7 upstream package, we do not check the contents
+cat << EOF > /usr/local/etc/rc.d/filebeat.sh
+#!/usr/bin/env sh
+
+# PROVIDE: filebeat
+# REQUIRE: DAEMON
+# BEFORE: LOGIN
+# KEYWORD: shutdown
+
+. /etc/rc.subr
+
+name="filebeat"
+rcvar=${name}_enable
+load_rc_config $name
+
+: ${filebeat_enable:="NO"}
+: ${filebeat_config:="/usr/local/etc/beats"}
+: ${filebeat_conffile:="filebeat.yml"}
+: ${filebeat_home:="/usr/local/share/beats/filebeat"}
+: ${filebeat_logs:="/var/log/beats"}
+: ${filebeat_data:="/var/db/beats/filebeat"}
+
+# daemon
+start_precmd=filebeat_prestart
+command=/usr/sbin/daemon
+pidfile="/var/run/${name}"
+command_args="-frP ${pidfile} /usr/local/sbin/${name} ${filebeat_flags} --path.config ${filebeat_config} --path.home ${filebeat_home} --path.data ${filebeat_data} --path.logs ${filebeat_logs} -c ${filebeat_conffile}"
+
+filebeat_prestart() {
+# Have to empty rc_flags so they don't get passed to daemon(8)
+	rc_flags=""
+}
+
+run_rc_command "$1"
+
+EOF
 echo " done."
 
 # Add the startup variable to rc.conf.local.
