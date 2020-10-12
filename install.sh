@@ -16,9 +16,9 @@ echo "Removing beats[6|7]..."
 /bin/rm /usr/local/etc/filebeat.yml
 echo "done."
 
-#Install new version
-echo "Installing filebeat..."
-/usr/sbin/pkg add -f https://pkg.freebsd.org/FreeBSD:11:amd64/latest/All/beats-6.7.1.txz
+#Download filebeat binary
+echo "Downloading filebeat binary..."
+curl --location --output /usr/local/sbin/filebeat https://github.com/omniitgmbh/beats/releases/download/v7.9.2/filebeat
 echo "done."
 
 # Make filebeat auto start at boot
