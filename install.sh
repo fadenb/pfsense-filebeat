@@ -25,7 +25,7 @@ echo "done."
 echo "Installing rc script..."
 # shellcheck disable=SC2154
 # Script taken from beats7 upstream package, we do not check the contents
-cat << EOF > /usr/local/etc/rc.d/filebeat.sh
+cat << EOF > /usr/local/etc/rc.d/filebeat
 #!/usr/bin/env sh
 
 # PROVIDE: filebeat
@@ -60,7 +60,9 @@ filebeat_prestart() {
 run_rc_command "$1"
 
 EOF
-echo " done."
+echo "Making /usr/local/etc/rc.d/filebeat executable"
+chmod +x /usr/local/etc/rc.d/filebeat
+echo " Done."
 
 # Add the startup variable to rc.conf.local.
 # In the following comparison, we expect the 'or' operator to short-circuit, to make sure the file exists and avoid grep throwing an error.
