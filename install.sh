@@ -93,6 +93,10 @@ logging.files:
 
 logging.to_syslog: true
 
+processors:
+  - add_tags:
+      tags: [ suricata ]
+
 #=========================== Filebeat inputs =============================
 filebeat.inputs:
 
@@ -107,17 +111,13 @@ filebeat.inputs:
 #----------------------------- Logstash output --------------------------------
 output.logstash:
   # The Logstash hosts
-  hosts: ["<YOUR-TARGET-SYSTEM>:<TARGET-PORT>"]
+  hosts: ["graylog.omniit.dev:5044"]
 
   # Optional SSL. By default is off.
   # List of root certificates for HTTPS server verifications
   # ssl.certificate_authorities: ["change"]
+  ssl.certificate_authorities: ['/usr/local/share/certs/ca-root-nss.crt']
 
-  # Certificate for SSL client authentication
-  # ssl.certificate: "change"
-
-  # Client Certificate Key
-  # ssl.key: "change"
 EOF
 
 # Start it up:
