@@ -70,10 +70,55 @@ if [ ! -f /etc/rc.conf.local ] || [ "$(grep -c filebeat_enable /etc/rc.conf.loca
   echo "done."
 fi
 
-# Copy config from Github
-/usr/local/bin/curl https://raw.githubusercontent.com/fadenb/pfsense-filebeat/master/filebeat.yml --output /usr/local/etc/filebeat.yml
+# Write filebeat config
+cat << EOF > /usr/local/etc/filebeat.yml
+#================================ Logging ======================================
+# There are four options for the log output: file, stderr, syslog, eventlog
+# The file output is the default.
+logging.level: critical
+
+# If enabled, filebeat periodically logs its internal metrics that have changed
+# in the last period. For each metric that changed, the delta from the value at
+# the beginning of the period is logged. Also, the total values for
+# all non-zero internal metrics are logged on shutdown. The default is true.
+logging.metrics.enabled: false
+
+# Logging to rotating files. Set logging.to_files to false to disable logging to
+# files.
+logging.to_files: false
+logging.files:
+   keepfiles: 7
+
+logging.to_syslog: true
+
+#=========================== Filebeat inputs =============================
+filebeat.inputs:
+
+- type: log
+  enabled: true
+  paths:
+    - /var/log/suricata/suricata_*/*.json
+
+  fields:
+    event.type: eve
+
+#----------------------------- Logstash output --------------------------------
+output.logstash:
+  # The Logstash hosts
+  hosts: ["<YOUR-TARGET-SYSTEM>:<TARGET-PORT>"]
+
+  # Optional SSL. By default is off.
+  # List of root certificates for HTTPS server verifications
+  # ssl.certificate_authorities: ["change"]
+
+  # Certificate for SSL client authentication
+  # ssl.certificate: "change"
+
+  # Client Certificate Key
+  # ssl.key: "change"
+EOF
 
 # Start it up:
-echo "Starting filebeat service..."
-/usr/sbin/service filebeat start
-echo "done."
+echo "Please update config at /usr/local/etc/filebeat.yml"
+echo "And then start filebat by executing:"
+echo "/usr/sbin/service filebeat start"
