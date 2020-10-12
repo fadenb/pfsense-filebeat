@@ -25,7 +25,7 @@ echo "done."
 echo "Installing rc script..."
 # shellcheck disable=SC2154
 # Script taken from beats7 upstream package, we do not check the contents
-cat << EOF > /usr/local/etc/rc.d/filebeat
+cat << "EOF" > /usr/local/etc/rc.d/filebeat
 #!/usr/bin/env sh
 
 # PROVIDE: filebeat
